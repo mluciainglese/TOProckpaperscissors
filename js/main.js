@@ -1,3 +1,8 @@
+// set score
+
+let humanScore = 0
+let computerScore = 0
+
 // Computer choice
 
 function getComputerChoice(){
@@ -14,7 +19,17 @@ function getComputerChoice(){
 
 // Human choice
 
-function getHumanChoice(){
+let rockButton = document.querySelector(".rock")
+let paperButton = document.querySelector(".paper")
+let scissorsButton = document.querySelector(".scissors")
+
+rockButton.addEventListener("click", () => playRound("rock", getComputerChoice()))
+paperButton.addEventListener("click", () =>  playRound("paper", getComputerChoice()))
+scissorsButton.addEventListener("click", () =>  playRound("scissors", getComputerChoice()))
+
+// No need for the function below anymore
+
+/* function getHumanChoice(){
     let choice = prompt("Choose your player")
     
     if (choice.toLowerCase() === "rock"){
@@ -28,31 +43,51 @@ function getHumanChoice(){
         return getHumanChoice()
         
     }
-}
+} */
 
-// set score
 
-let humanScore = 0
-let computerScore = 0
-
-// function to play a single round
+// function to play a round until someone gets 5 points
 
 function playRound(humanChoice, computerChoice){
     if((humanChoice === "rock" && computerChoice === "scissors") || (humanChoice === "paper" && computerChoice === "rock") || (humanChoice === "scissors" && computerChoice === "paper")){
-        console.log("Congratulations, you get a point!")
-        humanScore += 1
+        document.querySelector(".roundResult").innerText = "Congratulations, you get a point!"
+        document.querySelector(".yourScore").innerText = humanScore += 1
     } else if (humanChoice === computerChoice){
-        console.log("It's a tie! Score remains the same")
+        document.querySelector(".roundResult").innerText = "You both chose the same, no points awarded"
     } else {
-        console.log("Womp womp, computer gets a point!")
-        computerScore += 1
+        document.querySelector(".roundResult").innerText = "Womp womp, computer gets a point!"
+        document.querySelector(".compScore").innerText = computerScore += 1
     }
+    checkWinner()
+    
 }
 
+// End of game
 
-// function to play 5 rounds and deterine a winner
+function checkWinner(){
+    if (humanScore === 5 || computerScore === 5){
+        let buttons = document.querySelectorAll("button")
+        buttons.forEach(button => {
+            button.disabled = true
+        });
+    
+        if(humanScore === 5){
+        document.querySelector(".finalScore").innerText = "Congratulations! You win the game! No need to brag tho..."
+        } else if (computerScore === 5){
+        document.querySelector(".finalScore").innerText = "Such a pity, the computer beat you. Please don't cry!"
+        } 
 
-function playGame(){
+        setTimeout(() => {
+            alert("Game over! Please refresh the page to play again")
+            }, 100)
+    }
+} 
+
+
+
+// function to play 5 rounds and deterine a winner (not needed anymore)
+
+/* function playGame(){
     for (let roundsPlayed = 0; roundsPlayed < 5; roundsPlayed++){
         
         // gets winner and logs it
@@ -65,21 +100,21 @@ function playGame(){
         
         // logs scores into console
 
-        console.log(`Your score = ${humanScore}`)
-        console.log(`Computer score = ${computerScore}`)
+        document.querySelector(".finalScore").innerText = `Your score = ${humanScore}`
+        document.querySelector(".finalScore").innerText = `Computer score = ${computerScore}`
     }
 
     console.log(`Your final score is ${humanScore}`)
     console.log(`Computer's final score is ${computerScore}`)
 
     if(humanScore < computerScore){
-        console.log("Such a pity, the computer beat you. Better luck next time!")
+        document.querySelector("finalScore").innerText = "Such a pity, the computer beat you. Better luck next time!"
     } else if (computerScore < humanScore){
-        console.log("Congratulations! You win the game!")
+        document.querySelector("finalScore").innerText = "Congratulations! You win the game!"
     } else {
-        console.log("Oh noes, it's a tie!")
+        document.querySelector("finalScore").innerText = "Oh noes, it's a tie!"
     }
     console.log("Please refresh the page to play again")
 }
 
-playGame()
+playGame() */
